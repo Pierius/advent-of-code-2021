@@ -17,6 +17,9 @@ namespace AdventOfCode2021.Code
                 case Day.One:
                     new DayOne().Execute();
                     break;
+                case Day.Two:
+                    new DayTwo().Execute();
+                    break;
             }
         }
     }

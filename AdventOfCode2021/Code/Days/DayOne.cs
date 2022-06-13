@@ -7,11 +7,11 @@ using System.IO;
 
 namespace AdventOfCode2021.Code.Days
 {
-    internal class DayOne
+    internal class DayOne : AbstractDay
     {
         private string _path = null;
-
-        public void Execute()
+                
+        public override void Execute()
         {
             string filename = "day_one_puzzle_input.txt";
             _path = Path.Combine(Environment.CurrentDirectory, @"Resources\", filename);
@@ -89,11 +89,6 @@ namespace AdventOfCode2021.Code.Days
             }
 
             Answer("Part Two", numberOfIncreases);
-        }
-
-        private void Answer(string part, int value)
-        {
-            Console.WriteLine($"The answer of {part} is {value}");
-        }
+        }        
     }
 }
