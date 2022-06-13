@@ -22,6 +22,7 @@ namespace AdventOfCode2021.Code.Days
             }
 
             ExecutePartOne();
+            ExecutePartTwo();
         }
 
         private void ExecutePartOne()
@@ -50,6 +51,34 @@ namespace AdventOfCode2021.Code.Days
             Answer("Part One", distance * dept);
         }
 
+        private void ExecutePartTwo()
+        {
+            int distance = 0;
+            int dept = 0;
+            int aim = 0;
+
+            foreach (string line in File.ReadAllLines(_path))
+            {
+                KeyValuePair<string, int> movement = GetMovement(line);
+
+                switch (movement.Key)
+                {
+                    case "forward":
+                        distance += movement.Value;
+                        dept += movement.Value * aim;
+                        break;
+                    case "up":
+                        aim -= movement.Value;
+                        break;
+                    case "down":
+                        aim += movement.Value;
+                        break;
+                }                
+            }
+
+            Answer("Part Two", distance * dept);
+        }
+
         private KeyValuePair<string, int> GetMovement(string line)
         {
             string[] movement = line.Split(" ");
@@ -59,6 +88,5 @@ namespace AdventOfCode2021.Code.Days
 
             return new KeyValuePair<string, int>(direction, value);
         }
-
     }
 }
