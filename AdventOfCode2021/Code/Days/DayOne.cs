@@ -17,14 +17,14 @@ namespace AdventOfCode2021.Code.Days
             ExecutePartTwo(puzzleInput);
         }
 
-        private void ExecutePartOne(string[] input)
+        private void ExecutePartOne(string[] puzzleInput)
         {
             int numberOfIncreases = 0;
-            int previousDepth = Int32.Parse(input[0]);
+            int previousDepth = Int32.Parse(puzzleInput[0]);
 
-            for(int i = 1; i < input.Length; i++)
+            for(int i = 1; i < puzzleInput.Length; i++)
             {
-                int depth = Int32.Parse(input[i]);
+                int depth = Int32.Parse(puzzleInput[i]);
                 
                 if (depth > previousDepth)
                 {
@@ -36,21 +36,21 @@ namespace AdventOfCode2021.Code.Days
             Answer("Part One", numberOfIncreases);
         }
 
-        private void ExecutePartTwo(string[] input)
+        private void ExecutePartTwo(string[] puzzleInput)
         {
             int range = 3;
             int numberOfIncreases = 0;
-            int? previousSumOfThree = null;
+            int? previousSum = null;
 
-            for (int i = 0; i+range <= input.Length; i++)
+            for (int i = 0; i+range <= puzzleInput.Length; i++)
             {
-                int sumOfThree = input[i..(i+range)].Sum(Int32.Parse);                
+                int sum = puzzleInput[i..(i+range)].Sum(Int32.Parse);                
                 
-                if (previousSumOfThree != null && sumOfThree > previousSumOfThree)
+                if (previousSum != null && sum > previousSum)
                 {
                     numberOfIncreases++;
                 }
-                previousSumOfThree = sumOfThree;
+                previousSum = sum;
             }
 
             Answer("Part Two", numberOfIncreases);

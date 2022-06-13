@@ -16,14 +16,14 @@ namespace AdventOfCode2021.Code.Days
             ExecutePartTwo(puzzleInput);
         }
 
-        private void ExecutePartOne(string[] input)
+        private void ExecutePartOne(string[] puzzleInput)
         {
             int distance = 0;
             int dept = 0;
 
-            for (int i = 0; i < input.Length; i++)
+            for (int i = 0; i < puzzleInput.Length; i++)
             {
-                KeyValuePair<string, int> movement = GetMovement(input[i]);
+                KeyValuePair<string, int> movement = GetMovement(puzzleInput[i]);
 
                 switch (movement.Key)
                 {
@@ -42,15 +42,15 @@ namespace AdventOfCode2021.Code.Days
             Answer("Part One", distance * dept);
         }
 
-        private void ExecutePartTwo(string[] input)
+        private void ExecutePartTwo(string[] puzzleInput)
         {
             int distance = 0;
             int dept = 0;
             int aim = 0;
 
-            for (int i = 0; i < input.Length; i++)
+            for (int i = 0; i < puzzleInput.Length; i++)
             {
-                KeyValuePair<string, int> movement = GetMovement(input[i]);
+                KeyValuePair<string, int> movement = GetMovement(puzzleInput[i]);
 
                 switch (movement.Key)
                 {
