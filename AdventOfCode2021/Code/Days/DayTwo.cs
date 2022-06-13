@@ -8,31 +8,22 @@ namespace AdventOfCode2021.Code.Days
 {
     internal class DayTwo : AbstractDay
     {
-        private string _path = null;
-
         public override void Execute()
         {
-            string filename = "day_two_puzzle_input.txt";
-            _path = Path.Combine(Environment.CurrentDirectory, @"Resources\", filename);
-
-            if (!File.Exists(_path))
-            {
-                Console.WriteLine($"Resource file is missing: {_path}");
-                return;
-            }
-
-            ExecutePartOne();
-            ExecutePartTwo();
+            string[] puzzleInput = GetPuzzleInput("day_two_puzzle_input.txt");
+            
+            ExecutePartOne(puzzleInput);
+            ExecutePartTwo(puzzleInput);
         }
 
-        private void ExecutePartOne()
+        private void ExecutePartOne(string[] input)
         {
             int distance = 0;
             int dept = 0;
 
-            foreach(string line in File.ReadAllLines(_path))
+            for (int i = 0; i < input.Length; i++)
             {
-                KeyValuePair<string, int> movement = GetMovement(line);
+                KeyValuePair<string, int> movement = GetMovement(input[i]);
 
                 switch (movement.Key)
                 {
@@ -51,15 +42,15 @@ namespace AdventOfCode2021.Code.Days
             Answer("Part One", distance * dept);
         }
 
-        private void ExecutePartTwo()
+        private void ExecutePartTwo(string[] input)
         {
             int distance = 0;
             int dept = 0;
             int aim = 0;
 
-            foreach (string line in File.ReadAllLines(_path))
+            for (int i = 0; i < input.Length; i++)
             {
-                KeyValuePair<string, int> movement = GetMovement(line);
+                KeyValuePair<string, int> movement = GetMovement(input[i]);
 
                 switch (movement.Key)
                 {
