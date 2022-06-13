@@ -9,82 +9,47 @@ namespace AdventOfCode2021.Code.Days
 {
     internal class DayOne : AbstractDay
     {
-        private string _path = null;
-                
         public override void Execute()
         {
-            string filename = "day_one_puzzle_input.txt";
-            _path = Path.Combine(Environment.CurrentDirectory, @"Resources\", filename);
+            string[] puzzleInput = GetPuzzleInput("day_one_puzzle_input.txt");
 
-            if (!File.Exists(_path))
-            {
-                Console.WriteLine($"Resource file is missing: {_path}");
-                return;
-            }
-
-            ExecutePartOne();
-            ExecutePartTwo();
+            ExecutePartOne(puzzleInput);
+            ExecutePartTwo(puzzleInput);
         }
 
-        private void ExecutePartOne()
+        private void ExecutePartOne(string[] input)
         {
-            int? previousDepth = null;
             int numberOfIncreases = 0;
+            int previousDepth = Int32.Parse(input[0]);
 
-            foreach (string line in File.ReadLines(_path))
+            for(int i = 1; i < input.Length; i++)
             {
-                if (!Int32.TryParse(line, out int depth))
-                {
-                    continue;
-                }
-
-                if (previousDepth != null && depth > previousDepth)
+                int depth = Int32.Parse(input[i]);
+                
+                if (depth > previousDepth)
                 {
                     numberOfIncreases++;
                 }
-
                 previousDepth = depth;
             }
 
             Answer("Part One", numberOfIncreases);
         }
 
-        private void ExecutePartTwo()
+        private void ExecutePartTwo(string[] input)
         {
-            int? sumOfThree = null;
-            int? previousSumOfThree = null;
+            int range = 3;
             int numberOfIncreases = 0;
-            int[] slotTimes = new int[3] { 0, -1, -2 };
-            int[] slotSums = new int[3] { 0, 0, 0 };
+            int? previousSumOfThree = null;
 
-            foreach (string line in File.ReadLines(_path))
+            for (int i = 0; i+range <= input.Length; i++)
             {
-                if (!Int32.TryParse(line, out int depth))
-                {
-                    continue;
-                }
-
-                for(int i = 0; i < 3; i++)
-                {
-                    if (slotTimes[i] >= 0)
-                    {
-                        slotSums[i] += depth;
-                    }
-                    slotTimes[i]++;
-
-                    if (slotTimes[i] == 3)
-                    {
-                        sumOfThree = slotSums[i];
-                        slotSums[i] = 0;
-                        slotTimes[i] = 0;
-                    }
-                }
-
-                if (sumOfThree != null && previousSumOfThree != null && sumOfThree > previousSumOfThree)
+                int sumOfThree = input[i..(i+range)].Sum(Int32.Parse);                
+                
+                if (previousSumOfThree != null && sumOfThree > previousSumOfThree)
                 {
                     numberOfIncreases++;
                 }
-
                 previousSumOfThree = sumOfThree;
             }
 
