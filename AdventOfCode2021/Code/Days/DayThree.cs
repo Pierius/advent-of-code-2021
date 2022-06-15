@@ -13,6 +13,7 @@ namespace AdventOfCode2021.Code.Days
             string[] puzzleInput = GetPuzzleInput("day_three_puzzle_input.txt");
 
             ExecutePartOne(puzzleInput);
+            ExecutePartTwo(puzzleInput);
         }
 
         private void ExecutePartOne(string[] puzzleInput)
@@ -50,6 +51,68 @@ namespace AdventOfCode2021.Code.Days
         private int CalculatePowerRate(int gammaRate, int epsilonRate)
         {
             return gammaRate * epsilonRate;
+        }
+
+        private enum Rating 
+        { 
+            Co2Scrubber = 0,
+            Oxygen = 1
+        }
+
+
+        private void ExecutePartTwo(string[] puzzleInput)
+        {
+            string oxygenNumber = FindRating(puzzleInput, Rating.Oxygen);
+            string co2ScrubberNumber = FindRating(puzzleInput, Rating.Co2Scrubber);
+
+            int oxygenRating = Convert.ToInt32(oxygenNumber, 2);
+            int co2ScrubberRating = Convert.ToInt32(co2ScrubberNumber, 2);
+
+            Answer("Part Two", CalculateLifeSupportRating(oxygenRating, co2ScrubberRating));
+        }
+
+        private string FindRating(string[] numbers, Rating rating, int position = 0)
+        {
+            if (numbers.Length == 1 || position >= numbers[0].Length)
+            {
+                return numbers[0];
+            }
+
+            (int zero, int one) counter = (0, 0);
+
+            foreach (string number in numbers)
+            {
+                if (number[position].Equals('1'))
+                {
+                    counter.one++;
+                }
+                else
+                {
+                    counter.zero++;
+                }
+            }
+
+            char bit = '1';
+            switch (rating)
+            {
+                case Rating.Oxygen:
+                    bit = counter.one >= counter.zero ? '1' : '0';
+                    break;
+                case Rating.Co2Scrubber:
+                    bit = counter.one >= counter.zero ? '0' : '1';
+                    break;
+            }
+
+            return FindRating(
+                numbers: numbers.Where(n => n[position].Equals(bit)).ToArray(), 
+                rating: rating,
+                position: position + 1
+            );
+        }
+
+        private int CalculateLifeSupportRating(int oxygenRating, int co2ScrubberRating)
+        {
+            return oxygenRating * co2ScrubberRating;
         }
     }
 }
