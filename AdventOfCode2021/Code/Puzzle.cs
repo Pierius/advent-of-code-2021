@@ -23,6 +23,12 @@ namespace AdventOfCode2021.Code
                 case Day.Three:
                     new DayThree().Execute();
                     break;
+                case Day.Four:
+                    new DayFour().Execute();
+                    break;
+                default:
+                    Console.WriteLine($"Warning Day: {day} is not yet solved!");
+                    break;
             }
         }
     }
