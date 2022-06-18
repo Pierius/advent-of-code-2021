@@ -13,6 +13,7 @@ namespace AdventOfCode2021.Code.Days
             string[] puzzleInput = GetPuzzleInput("day_four_puzzle_input.txt");
 
             ExecutePartOne(puzzleInput);
+            ExecutePartTwo(puzzleInput);
         }
 
         private void ExecutePartOne(string[] puzzleInput)
@@ -38,6 +39,32 @@ namespace AdventOfCode2021.Code.Days
             }
             
             DrawWinningBingoBoards(winners);
+        }
+
+        private void ExecutePartTwo(string[] puzzleInput)
+        {
+            List<int> drawnNumbers = GetDrawnNumbers(puzzleInput[0]);
+            List<BingoBoard> bingoBoards = GetBingoBoards(puzzleInput);
+            BingoBoard lastWinner = null;
+
+            foreach (int number in drawnNumbers)
+            {
+                foreach (BingoBoard board in bingoBoards)
+                {
+                    if (board.IsWinner())
+                    {
+                        continue;
+                    }
+                        
+                    board.MarkNumber(number);
+                    if (board.IsWinner())
+                    {
+                        lastWinner = board;
+                    }
+                }                
+            }
+
+            lastWinner.DrawBoard();
         }
 
         private void DrawWinningBingoBoards(List<BingoBoard> winners)
