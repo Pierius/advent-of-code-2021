@@ -9,22 +9,41 @@ namespace AdventOfCode2021.Code.Days
 {
     internal class DayFive : AbstractDay
     {
+        private enum Direction 
+        {
+            Horizontal,
+            Vertical,
+            Diagonal
+        }
+
         public override void Execute()
         {
             string[] puzzleInput = GetPuzzleInput("day_five_puzzle_input.txt");
 
             ExecutePartOne(puzzleInput);
+            ExecutePartTwo(puzzleInput);
         }
 
         private void ExecutePartOne(string[] lines)
         {
-            int[,] field = new int[999, 999];
+            int[,] field = new int[1000, 1000];
             var paths = GetPaths(lines);
 
-            DrawPaths(field, paths);
+            DrawPaths(field, paths, new List<Direction>() { Direction.Horizontal, Direction.Vertical });
             int countOverlap = GetOverlapCount(field, 2);
 
             Answer("Part One", countOverlap);
+        }
+
+        private void ExecutePartTwo(string[] lines)
+        {
+            int[,] field = new int[1000, 1000];
+            var paths = GetPaths(lines);
+
+            DrawPaths(field, paths, new List<Direction>() { Direction.Horizontal, Direction.Vertical, Direction.Diagonal });
+            int countOverlap = GetOverlapCount(field, 2);
+
+            Answer("Part Two", countOverlap);
         }
 
         private int GetOverlapCount(int[,] field, int minimumTimes)
@@ -45,11 +64,11 @@ namespace AdventOfCode2021.Code.Days
             return counter;
         }
 
-        private void DrawPaths(int[,] field, List<Path> paths)
+        private void DrawPaths(int[,] field, List<Path> paths, List<Direction> allowedDirections)
         {
             foreach (var path in paths)
             {
-                List<Coordinate> coordinates = path.GetPathCoordinates();
+                List<Coordinate> coordinates = path.GetPathCoordinates(allowedDirections);
 
                 foreach(var coordinate in coordinates)
                 {
@@ -97,27 +116,45 @@ namespace AdventOfCode2021.Code.Days
                 StartPoint = new Coordinate(startX, startY);
                 EndPoint = new Coordinate(endX, endY);
             }
-            public List<Coordinate> GetPathCoordinates()
+            public List<Coordinate> GetPathCoordinates(List<Direction> directions)
             {
-                List<Coordinate> coordinates = new List<Coordinate>();
+                List<Coordinate> coordinates = new List<Coordinate>()
+                {                    
+                    new Coordinate(EndPoint.X, EndPoint.Y)
+                };
 
-                if (StartPoint.X == EndPoint.X)
+                if (StartPoint.X == EndPoint.X && directions.Contains(Direction.Vertical))
                 {
-                    // vertical line
-                    int y = EndPoint.Y - StartPoint.Y;
-                    for (int i = (y > 0 ? StartPoint.Y : EndPoint.Y); i <= (y > 0 ? EndPoint.Y : StartPoint.Y); i++)
+                    for (int vert = StartPoint.Y; vert != EndPoint.Y;)
                     {
-                        coordinates.Add(new Coordinate(StartPoint.X, i));
+                        coordinates.Add(new Coordinate(StartPoint.X, vert));
+
+                        vert = EndPoint.Y > StartPoint.Y ? vert + 1 : vert - 1;
                     }
                 }
-                else if (StartPoint.Y == EndPoint.Y)
+                else if (StartPoint.Y == EndPoint.Y && directions.Contains(Direction.Horizontal))
                 {
-                    // horizontal line
-                    int x = EndPoint.X - StartPoint.X;
-                    for (int i = (x > 0 ? StartPoint.X : EndPoint.X); i <= (x > 0 ? EndPoint.X : StartPoint.X); i++)
+                    for (int hor = StartPoint.X; hor != EndPoint.X;)
                     {
-                        coordinates.Add(new Coordinate(i, StartPoint.Y));
+                        coordinates.Add(new Coordinate(hor, StartPoint.Y));
+                        
+                        hor = EndPoint.X > StartPoint.X ? hor + 1 : hor - 1;
                     }
+                }
+                else if (StartPoint.X != EndPoint.X && StartPoint.Y != EndPoint.Y && directions.Contains(Direction.Diagonal))
+                {
+                    for (int hor = StartPoint.X, vert = StartPoint.Y; hor != EndPoint.X && vert != EndPoint.Y;)
+                    {
+                        coordinates.Add(new Coordinate(hor, vert));
+                        
+                        hor = EndPoint.X > StartPoint.X ? hor + 1 : hor - 1;
+                        vert = EndPoint.Y > StartPoint.Y ? vert + 1 : vert - 1;
+                    }
+                }
+                else
+                {
+                    // Remove endpoint
+                    coordinates.Clear();
                 }
 
                 return coordinates;
