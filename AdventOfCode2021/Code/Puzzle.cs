@@ -26,6 +26,9 @@ namespace AdventOfCode2021.Code
                 case Day.Four:
                     new DayFour().Execute();
                     break;
+                case Day.Five:
+                    new DayFive().Execute();
+                    break;
                 default:
                     Console.WriteLine($"Warning Day: {day} is not yet solved!");
                     break;
