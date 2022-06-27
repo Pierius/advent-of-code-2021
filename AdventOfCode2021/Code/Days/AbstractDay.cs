@@ -34,5 +34,10 @@ namespace AdventOfCode2021.Code.Days
         {
             Console.WriteLine($"The answer of {part} is {value}");
         }
+
+        public void Answer(string part, string value)
+        {
+            Console.WriteLine($"The answer of {part} is {value}");
+        }
     }
 }
