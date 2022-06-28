@@ -17,39 +17,45 @@ namespace AdventOfCode2021.Code.Days
                 "16,1,2,0,4,2,7,1,2,14"
             };
 
-            ExecutePartOne(puzzleInput);
-            ExecutePartTwo(sampleInput);
+            ExecutePartOneAndTwo(puzzleInput);            
         }
 
-        public void ExecutePartOne(string[] puzzleInput)
+        public void ExecutePartOneAndTwo(string[] puzzleInput)
         {
             List<int> positions = puzzleInput[0].Split(',').Select(Int32.Parse).ToList();
 
             int highest = positions.Max();
             int lowest = positions.Min();
 
-            List<(int position, int cost)> positionCosts = new List<(int position, int cost)>();
+            List<(int position, (int one, int two) cost)> positionCosts = new List<(int position, (int one, int two) cost)>();
 
             for (; lowest <= highest; lowest++)
             {
-                int cost = 0;
+                int costOne = 0;
+                int costTwo = 0;
 
                 for (int i = 0; i < positions.Count; i++)
                 {
-                    cost += Math.Abs(positions[i] - lowest);
+                    int steps = Math.Abs(positions[i] - lowest);
+                    int sum = 0;
+
+                    for (int j = 1; j <= steps; j++)
+                    {
+                        sum += j;
+                    }
+
+                    costOne += steps;
+                    costTwo += sum;
                 }
 
-                positionCosts.Add((lowest, cost));
+                positionCosts.Add((lowest, (costOne, costTwo)));
             }
                        
-            var result = positionCosts.MinBy(x => x.cost);
+            var resultOne = positionCosts.MinBy(x => x.cost.one);
+            var resultTwo = positionCosts.MinBy(x => x.cost.two);
 
-            Answer("Part One", $"position:{result.position}, cost:{result.cost}");
-        }
-
-        public void ExecutePartTwo(string[] puzzleInput)
-        {
-            
+            Answer("Part One", $"position:{resultOne.position}, cost:{resultOne.cost.one}");
+            Answer("Part Two", $"position:{resultTwo.position}, cost:{resultTwo.cost.two}");
         }
     }
 }
